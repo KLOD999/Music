@@ -1,0 +1,45 @@
+{% extends 'women/base.html' %}
+
+
+{% block content %}
+
+<strong>Жанры: </strong>
+{% for c in cats %}
+{% if c.women__count > 0 %}
+{% if c.pk == cat_selected %}
+{{c.name}}
+{% else %}
+<a href="{{ c.get_absolute_url }} " style="text-decoration: none; color: black;">{{c.name}} </a>
+{% endif %}
+{% endif %}
+{% endfor %}
+
+
+<ul class="list-articles">
+    {% for element in posts %}
+    <li>
+        <div class="article-panel">
+            <p class="first">Жанр: {{ element.cat.name }}</p>
+            <p class="last">Дата: {{ element.time_update|date:"d-m-Y H:i:s" }}</p>
+        </div>
+        <div class="media">
+            {% if element.photo %}
+            <p><img class="img-article-left thumb" src="{{ element.photo.url }}"></p>
+            {% endif %}
+        </div>
+
+        <h2>{{ element.title }}</h2>
+        {% autoescape on %}
+        {{ element.content|linebreaks|truncatewords:50 }}
+        <!-- проставить теги абзацев при выводе постов (фильтр |linebreaks ) -->
+        <!-- ограничить размер постов в списке 50-ю словами (фильтр |truncatewords:50 ) -->
+        {% endautoescape %}
+        <div class="clear"></div>
+        <p class="link-read-post"><a href="{{ element.get_absolute_url }}">Смотреть больше</a></p>  <!-- 2 способ -->
+        <!-- <p class="link-read-post"><a href="{% url 'post' element.pk %}">Читать пост</a></p>  1 способ-->
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+

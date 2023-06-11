@@ -1,0 +1,21 @@
+{% extends 'women/base.html' %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+
+<form action="{% url 'add_page' %}" method="post" enctype="multipart/form-data"> <!-- к какому url должны обратиться дла обработки данных на сервер,
+                                                               метод = POST для передачи -->
+    {% csrf_token %}
+    <!-- тег csrf_token, который генерирует скрытое поле с уникальным токеном. необходимо для защиты от CSRF-атак -->
+    <!-- {{ form.as_p }} --> <!-- вызывает метод as_p нашей формы для отображения ее полей, используя теги абзацев  -->
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+    <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>
+    <div style="width: 25px;">{{ f }}</div>
+    </p>
+    <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+    <button type="submit">Добавить</button> <!-- кнопка отправить -->
+</form>
+
+{% endblock %}
